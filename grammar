@@ -167,7 +167,7 @@ expr
 
 %type <Ptr<Expr>> term;
 term
-    : ident_or_other
+    : ident
     | numeric
     | boolean
     | string
@@ -179,17 +179,6 @@ term
     | match_expr
     | list_expr
     | TNONE
-    ;
-
-ident_or_other
-    : ident another_tail
-    ;
-
-another_tail
-    : %empty
-    | TDOT ident another_tail
-    | TLPAREN call_args TRPAREN another_tail
-    | TLBRACKET expr TRBRACKET another_tail
     ;
 
 call_args
