@@ -99,15 +99,15 @@ stmt
 
 %type <Ptr<Stmt>> decl_or_assign;
 decl_or_assign
-    : TAT ident decl_tail TASSIGN expr
+    : TAT ident term_tail TASSIGN expr
     | TAT TDOT ident TASSIGN expr
     ;
 
-decl_tail
+term_tail
     : %empty
-    | TDOT ident decl_tail
-    | TLPAREN call_args TRPAREN decl_tail
-    | TLBRACKET expr TRBRACKET decl_tail
+    | TDOT ident term_tail
+    | TLPAREN call_args TRPAREN term_tail
+    | TLBRACKET expr TRBRACKET term_tail
     ;
 
 block
@@ -160,7 +160,7 @@ expr
     | expr TMUL expr
     | expr TDIV expr
     | expr TMOD expr
-    | term
+    | term term_tail
     | TLBRACE enumerators TRBRACE
     | TLBRACE dictionary TRBRACE
     ;
@@ -230,8 +230,8 @@ foreach_stmt
     ;
 
 lambda_expr
-    : TAT TLPAREN TRPAREN block decl_tail
-    | TAT TLPAREN func_decl_args TRPAREN block decl_tail
+    : TAT TLPAREN TRPAREN block
+    | TAT TLPAREN func_decl_args TRPAREN block
     ;
 
 class_decl
