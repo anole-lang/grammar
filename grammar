@@ -114,13 +114,6 @@ block
     : TLBRACE stmts TRBRACE
     ;
 
-func_decl_args
-    : ident
-    | ident TCOMMA func_decl_args
-    | ident TASSIGN expr
-    | ident TASSIGN expr TCOMMA func_decl_args
-    ;
-
 %type <Ptr<IdentifierExpr>> ident;
 ident
     : TIDENTIFIER
@@ -219,13 +212,25 @@ foreach_stmt
     ;
 
 lambda_expr
-    : TAT TLPAREN TRPAREN block
-    | TAT TLPAREN func_decl_args TRPAREN block
+    : TAT TLPAREN TRPAREN lambda_decl_tail
+    | TAT TLPAREN decl_args TRPAREN lambda_decl_tail
+    ;
+
+decl_args
+    : ident
+    | ident TCOMMA decl_args
+    | ident TASSIGN expr
+    | ident TASSIGN expr TCOMMA decl_args
+    ;
+
+lambda_decl_tail
+    : TASSIGN expr
+    | block
     ;
 
 class_decl
     : TATAT ident TLPAREN TRPAREN block
-    | TATAT ident TLPAREN func_decl_args TRPAREN block
+    | TATAT ident TLPAREN enumerators TRPAREN block
     ;
 
 new_expr
