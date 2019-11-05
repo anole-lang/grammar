@@ -160,6 +160,8 @@ expr
     | expr TMUL expr
     | expr TDIV expr
     | expr TMOD expr
+    | TNOT term term_tail
+    | TSUB term term_tail
     | term term_tail
     | TLBRACE enumerators TRBRACE
     | TLBRACE dictionary TRBRACE
@@ -171,8 +173,6 @@ term
     | numeric
     | boolean
     | string
-    | TNOT term
-    | TSUB term
     | TLPAREN expr TRPAREN
     | lambda_expr
     | new_expr
