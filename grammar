@@ -29,10 +29,10 @@
 %token TTRUE;    // true
 %token TFALSE;   // false
 
-%token <std::string> TIDENTIFIER; // [a-zA-Z_][a-zA-Z0-9_]*
-%token <int64_t>     TINTEGER;    // [0-9]+
-%token <double>      TDOUBLE;     // [0-9]+\.[0-9]*
-%token <std::string> TSTRING;     // "[^"\n]"
+%token TIDENTIFIER; // [a-zA-Z_][a-zA-Z0-9_]*
+%token TINTEGER;    // [0-9]+
+%token TDOUBLE;     // [0-9]+\.[0-9]*
+%token TSTRING;     // "[^"\n]"
 
 %token TBLS;       // <<
 %token TBRS;       // >>
@@ -61,12 +61,6 @@
 %token TLBRACE;    // {
 %token TRBRACE;    // }
 
-%left TOR TAND;
-%left TCEQ TCNE TCLT TCLE TCGT TCGE;
-%left TBLS TBRS;
-%left TADD TSUB;
-%left TMUL TDIV TMOD;
-
 %%
 
 %start program;
@@ -75,13 +69,11 @@ program
     : stmts
     ;
 
-%type <Ptr<StmtList>> stmts;
 stmts
     : %empty
     | stmt stmts
     ;
 
-%type <Ptr<Stmt>> stmt;
 stmt
     : decl_or_assign
     | class_decl
@@ -97,7 +89,6 @@ stmt
     | TBREAK
     ;
 
-%type <Ptr<Stmt>> decl_or_assign;
 decl_or_assign
     : TAT ident term_tail TASSIGN expr
     | TAT TDOT ident TASSIGN expr
@@ -114,56 +105,69 @@ block
     : TLBRACE stmts TRBRACE
     ;
 
-%type <Ptr<IdentifierExpr>> ident;
 ident
     : TIDENTIFIER
     ;
 
-%type <Ptr<Expr>> numeric;
 numeric
     : TINTEGER
     | TDOUBLE
     ;
 
-%type <Ptr<BoolExpr>> boolean;
+none
+    : TNONE
+    ;
+
 boolean
     : TTRUE
     | TFALSE
     ;
 
-%type <Ptr<StringExpr>> string;
 string
     : TSTRING
     ;
 
-%type <Ptr<Expr>> expr;
 expr
-    : expr TOR expr
-    | expr TAND expr
-    | expr TCEQ expr
-    | expr TCNE expr
-    | expr TCLT expr
-    | expr TCLE expr
-    | expr TCGT expr
-    | expr TCGE expr
-    | expr TBLS expr
-    | expr TBRS expr
-    | expr TADD expr
-    | expr TSUB expr
-    | expr TMUL expr
-    | expr TDIV expr
-    | expr TMOD expr
-    | TNOT term term_tail
-    | TSUB term term_tail
-    | term term_tail
-    | TLBRACE enumerators TRBRACE
-    | TLBRACE dictionary TRBRACE
+    : expr2 TOR expr2
+    | expr2 TAND expr2
     ;
 
-%type <Ptr<Expr>> term;
+expr2
+    : expr3 TCEQ expr3
+    | expr3 TCNE expr3
+    | expr3 TCLT expr3
+    | expr3 TCLE expr3
+    | expr3 TCGT expr3
+    | expr3 TCGE expr3
+    ;
+
+expr3
+    : expr4 TBLS expr4
+    | expr4 TBRS expr4
+    ;
+
+expr4
+    : expr5 TADD expr5
+    | expr5 TSUB expr5
+    ;
+
+expr5
+    : expr6 TMUL expr6
+    | expr6 TDIV expr6
+    | expr6 TMOD expr6
+    | expr6
+    ;
+
+expr6
+    : TNOT expr6
+    | TSUB expr6
+    | term term_tail
+    ;
+
 term
     : ident
     | numeric
+    | none
     | boolean
     | string
     | TLPAREN expr TRPAREN
@@ -171,17 +175,18 @@ term
     | new_expr
     | match_expr
     | list_expr
-    | TNONE
+    | enum_expr
+    | dict_expr
     ;
 
 call_args
     : %empty
-    | expr call_args_tail
+    | expr call_args_rest
     ;
 
-call_args_tail
+call_args_rest
     : %empty
-    | TCOMMA expr call_args_tail
+    | TCOMMA expr call_args_rest
     ;
 
 if_else
@@ -212,15 +217,19 @@ foreach_stmt
     ;
 
 lambda_expr
-    : TAT TLPAREN TRPAREN lambda_decl_tail
-    | TAT TLPAREN decl_args TRPAREN lambda_decl_tail
+    : TAT TLPAREN decl_args TRPAREN lambda_decl_tail
     ;
 
 decl_args
-    : ident
-    | ident TCOMMA decl_args
-    | ident TASSIGN expr
-    | ident TASSIGN expr TCOMMA decl_args
+    : %empty
+    | ident decl_args_rest
+    | ident TASSIGN expr decl_args_rest
+    ;
+
+decl_args_rest
+    : %empty
+    | TCOMMA ident decl_args_rest
+    | TCOMMA ident TASSIGN expr decl_args_rest
     ;
 
 lambda_decl_tail
@@ -229,45 +238,55 @@ lambda_decl_tail
     ;
 
 class_decl
-    : TATAT ident TLPAREN TRPAREN block
-    | TATAT ident TLPAREN enumerators TRPAREN block
+    : TATAT ident TLPAREN bases TRPAREN block
+    ;
+
+bases:
+    : %empty
+    | ident bases_rest
+    ;
+
+bases_rest
+    : %empty
+    | TCOMMA ident bases_rest
     ;
 
 new_expr
     : TNEW ident TLPAREN call_args TRPAREN
     ;
 
-enumerators
-    : %empty
-    | ident enumerators_rest
+enum_expr
+    : TLBRACE ident enum_rest TRBRACE
     ;
 
-enumerators_rest
+enum_rest
     : %empty
-    | TCOMMA enumerators
+    | TCOMMA ident enum_rest
     ;
 
-dictionary
-    : expr TASSIGN expr dictionary_rest
+dict_expr
+    : TLBRACE TRBRACE
+    | TLBRACE expr TASSIGN expr dict_rest TRBRACE
     ;
 
-dictionary_rest
+dict_rest
     : %empty
-    | TCOMMA dictionary
+    | TCOMMA expr TASSIGN expr dict_rest
     ;
 
 match_expr
-    : TMATCH expr TLBRACE matches TRBRACE
-    | TMATCH expr TLBRACE matches TRBRACE TELSE expr
+    : TMATCH expr TLBRACE TRBRACE match_tail
+    | TMATCH expr TLBRACE expr call_args_rest TRET expr match_rest TRBRACE match_tail
     ;
 
-matches
-    : expr call_args_tail TRET expr matches_rest
-    ;
-
-matches_rest
+match_rest
     : %empty
-    | TCOMMA matches
+    | TCOMMA expr call_args_rest TRET expr match_rest
+    ;
+
+match_tail
+    : %empty
+    | TELSE expr
     ;
 
 list_expr
