@@ -1,65 +1,65 @@
-# Grammar for Ice
+# grammar for ice
 # http://www.jusot.com/ice/grammar/
 
-# Start symbols for the grammar:
+# start symbols for the grammar:
 #       stmt is a single interactive statemnet;
 #       stmts is a module or sequence of commands read from an input file;
 
-%token TAT;      // @
-%token TATAT;    // @@
+%token At;      // @
+%token Atat;    // @@
 
-%token TUSING;   // using
-%token TIF;      // if
-%token TELIF;    // elif
-%token TELSE;    // else
-%token TWHILE;   // while
-%token TDO;      // do
-%token TFOR;     // for
-%token TTO;      // to
-%token TFOREACH; // foreach
-%token TAS;      // as
-%token TBREAK;   // break
-%token TCONTINUE;// continue
-%token TRETURN;  // return
-%token TMATCH;   // match
+%token Using;   // using
+%token If;      // if
+%token Elif;    // elif
+%token Else;    // else
+%token While;   // while
+%token Do;      // do
+%token For;     // for
+%token To;      // to
+%token Foreach; // foreach
+%token As;      // as
+%token Break;   // break
+%token Continue;// continue
+%token Return;  // return
+%token Match;   // match
 
-%token TNEW;     // new
+%token New;     // new
 
-%token TNONE;    // none
-%token TTRUE;    // true
-%token TFALSE;   // false
+%token None;    // none
+%token True;    // true
+%token False;   // false
 
-%token TIDENTIFIER; // [a-zA-Z_][a-zA-Z0-9_]*
-%token TINTEGER;    // [0-9]+
-%token TDOUBLE;     // [0-9]+\.[0-9]*
-%token TSTRING;     // "[^"\n]"
+%token Identifier; // [a-za-z_][a-za-z0-9_]*
+%token Integer;    // [0-9]+
+%token Double;     // [0-9]+\.[0-9]*
+%token String;     // "[^"\n]"
 
-%token TBLS;       // <<
-%token TBRS;       // >>
-%token TAND;       // and
-%token TOR;        // or
-%token TNOT;       // not !
-%token TCEQ;       // =
-%token TCNE;       // !=
-%token TCLT;       // <
-%token TCLE;       // <=
-%token TCGT;       // >
-%token TCGE;       // >=
-%token TRET;       // =>
-%token TADD;       // +
-%token TSUB;       // -
-%token TMUL;       // *
-%token TDIV;       // /
-%token TMOD;       // %
-%token TASSIGN;    // %
-%token TDOT;       // .
-%token TCOMMA;     // ,
-%token TLPAREN;    // (
-%token TRPAREN;    // )
-%token TLBRACKET;  // [
-%token TRBRACKET;  // ]
-%token TLBRACE;    // {
-%token TRBRACE;    // }
+%token BLS;       // <<
+%token BRH;       // >>
+%token And;       // and
+%token Or;        // or
+%token Not;       // not !
+%token CEQ;       // =
+%token CNE;       // !=
+%token CLT;       // <
+%token CLE;       // <=
+%token CGT;       // >
+%token CGE;       // >=
+%token Ret;       // =>
+%token Add;       // +
+%token Sub;       // -
+%token Mul;       // *
+%token Div;       // /
+%token Mod;       // %
+%token Assign;    // %
+%token Dot;       // .
+%token Comma;     // ,
+%token LParen;    // (
+%token RParen;    // )
+%token LBracket;  // [
+%token RBracket;  // ]
+%token LBrace;    // {
+%token RBrace;    // }
 
 %%
 
@@ -83,84 +83,84 @@ stmt
     | for_stmt
     | foreach_stmt
     | expr
-    | TRETURN expr
-    | TUSING ident
-    | TCONTINUE
-    | TBREAK
+    | Return expr
+    | Using ident
+    | Continue
+    | Break
     ;
 
 decl_or_assign
-    : TAT ident term_tail TASSIGN expr
-    | TAT TDOT ident TASSIGN expr
+    : At ident term_tail Assign expr
+    | At Dot ident Assign expr
     ;
 
 term_tail
     : %empty
-    | TDOT ident term_tail
-    | TLPAREN call_args TRPAREN term_tail
-    | TLBRACKET expr TRBRACKET term_tail
+    | Dot ident term_tail
+    | LParen call_args RParen term_tail
+    | LBracket expr RBracket term_tail
     ;
 
 block
-    : TLBRACE stmts TRBRACE
+    : LBrace stmts RBrace
     ;
 
 ident
-    : TIDENTIFIER
+    : Identifier
     ;
 
 numeric
-    : TINTEGER
-    | TDOUBLE
+    : Integer
+    | Double
     ;
 
 none
-    : TNONE
+    : None
     ;
 
 boolean
-    : TTRUE
-    | TFALSE
+    : True
+    | False
     ;
 
 string
-    : TSTRING
+    : String
     ;
 
 expr
-    : expr2 TOR expr2
-    | expr2 TAND expr2
+    : expr2 Or expr2
+    | expr2 And expr2
     ;
 
 expr2
-    : expr3 TCEQ expr3
-    | expr3 TCNE expr3
-    | expr3 TCLT expr3
-    | expr3 TCLE expr3
-    | expr3 TCGT expr3
-    | expr3 TCGE expr3
+    : expr3 CEQ expr3
+    | expr3 CNE expr3
+    | expr3 CLT expr3
+    | expr3 CLE expr3
+    | expr3 CGT expr3
+    | expr3 CGE expr3
     ;
 
 expr3
-    : expr4 TBLS expr4
-    | expr4 TBRS expr4
+    : expr4 BLS expr4
+    | expr4 BRH expr4
     ;
 
 expr4
-    : expr5 TADD expr5
-    | expr5 TSUB expr5
+    : expr5 Add expr5
+    | expr5 Sub expr5
     ;
 
 expr5
-    : expr6 TMUL expr6
-    | expr6 TDIV expr6
-    | expr6 TMOD expr6
+    : expr6 Mul expr6
+    | expr6 Div expr6
+    | expr6 Mod expr6
     | expr6
     ;
 
 expr6
-    : TNOT expr6
-    | TSUB expr6
+    : Not expr6
+    | Sub expr6
     | term term_tail
     ;
 
@@ -170,7 +170,7 @@ term
     | none
     | boolean
     | string
-    | TLPAREN expr TRPAREN
+    | LParen expr RParen
     | lambda_expr
     | new_expr
     | match_expr
@@ -186,59 +186,59 @@ call_args
 
 call_args_rest
     : %empty
-    | TCOMMA expr call_args_rest
+    | Comma expr call_args_rest
     ;
 
 if_else
-    : TIF expr block if_else_tail
+    : If expr block if_else_tail
     ;
 
 if_else_tail
     : %empty
-    | TELIF block if_else_tail
-    | TELSE block
+    | Elif block if_else_tail
+    | Else block
     ;
 
 while_stmt
-    : TWHILE expr block
+    : While expr block
     ;
 
 do_while_stmt
-    : TDO block TWHILE expr
+    : Do block While expr
     ;
 
 for_stmt
-    : TFOR expr TTO expr TAS ident block
-    | TFOR expr TTO expr block
+    : For expr To expr As ident block
+    | For expr To expr block
     ;
 
 foreach_stmt
-    : TFOREACH expr TAS ident block
+    : Foreach expr As ident block
     ;
 
 lambda_expr
-    : TAT TLPAREN decl_args TRPAREN lambda_decl_tail
+    : At LParen decl_args RParen lambda_decl_tail
     ;
 
 decl_args
     : %empty
     | ident decl_args_rest
-    | ident TASSIGN expr decl_args_rest
+    | ident Assign expr decl_args_rest
     ;
 
 decl_args_rest
     : %empty
-    | TCOMMA ident decl_args_rest
-    | TCOMMA ident TASSIGN expr decl_args_rest
+    | Comma ident decl_args_rest
+    | Comma ident Assign expr decl_args_rest
     ;
 
 lambda_decl_tail
-    : TASSIGN expr
+    : Assign expr
     | block
     ;
 
 class_decl
-    : TATAT ident TLPAREN bases TRPAREN block
+    : Atat ident LParen bases RParen block
     ;
 
 bases:
@@ -248,47 +248,47 @@ bases:
 
 bases_rest
     : %empty
-    | TCOMMA ident bases_rest
+    | Comma ident bases_rest
     ;
 
 new_expr
-    : TNEW ident TLPAREN call_args TRPAREN
+    : New ident LParen call_args RParen
     ;
 
 enum_expr
-    : TLBRACE ident enum_rest TRBRACE
+    : LBrace ident enum_rest RBrace
     ;
 
 enum_rest
     : %empty
-    | TCOMMA ident enum_rest
+    | Comma ident enum_rest
     ;
 
 dict_expr
-    : TLBRACE TRBRACE
-    | TLBRACE expr TASSIGN expr dict_rest TRBRACE
+    : LBrace RBrace
+    | LBrace expr Assign expr dict_rest RBrace
     ;
 
 dict_rest
     : %empty
-    | TCOMMA expr TASSIGN expr dict_rest
+    | Comma expr Assign expr dict_rest
     ;
 
 match_expr
-    : TMATCH expr TLBRACE TRBRACE match_tail
-    | TMATCH expr TLBRACE expr call_args_rest TRET expr match_rest TRBRACE match_tail
+    : Match expr LBrace RBrace match_tail
+    | Match expr LBrace expr call_args_rest Ret expr match_rest RBrace match_tail
     ;
 
 match_rest
     : %empty
-    | TCOMMA expr call_args_rest TRET expr match_rest
+    | Comma expr call_args_rest Ret expr match_rest
     ;
 
 match_tail
     : %empty
-    | TELSE expr
+    | Else expr
     ;
 
 list_expr
-    : TLBRACKET call_args TRBRACKET
+    : LBracket call_args RBracket
     ;
