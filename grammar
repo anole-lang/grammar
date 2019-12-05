@@ -276,12 +276,12 @@ enum_rest
 
 dict_expr
     : LBrace RBrace
-    | LBrace expr Assign expr dict_rest RBrace
+    | LBrace expr Ret expr dict_rest RBrace
     ;
 
 dict_rest
     : %empty
-    | Comma expr Assign expr dict_rest
+    | Comma expr Ret expr dict_rest
     ;
 
 match_expr
