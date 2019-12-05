@@ -75,7 +75,7 @@ stmts
     ;
 
 stmt
-    : assignment
+    : declaration
     | class_decl
     | if_else
     | while_stmt
@@ -89,7 +89,7 @@ stmt
     | Break
     ;
 
-assignment
+declaration
     : At ident
     | At ident Assign expr
     | At ident LParen decl_args RParen lambda_decl_tail
