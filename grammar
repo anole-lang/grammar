@@ -75,7 +75,7 @@ stmts
     ;
 
 stmt
-    : decl_or_assign
+    : assignment
     | class_decl
     | if_else
     | while_stmt
@@ -89,16 +89,10 @@ stmt
     | Break
     ;
 
-decl_or_assign
-    : At ident term_tail Assign expr
-    | At Dot ident Assign expr
-    ;
-
-term_tail
-    : %empty
-    | Dot ident term_tail
-    | LParen call_args RParen term_tail
-    | LBracket expr RBracket term_tail
+assignment
+    : At ident
+    | At ident Assign expr
+    | At ident LParen decl_args RParen lambda_decl_tail
     ;
 
 block
@@ -128,8 +122,14 @@ string
     ;
 
 expr
+    : expr1 Assign expr1
+    | expr1
+    ;
+
+expr1
     : expr2 Or expr2
     | expr2 And expr2
+    | expr2
     ;
 
 expr2
@@ -139,16 +139,19 @@ expr2
     | expr3 CLE expr3
     | expr3 CGT expr3
     | expr3 CGE expr3
+    | expr4
     ;
 
 expr3
     : expr4 BLS expr4
     | expr4 BRH expr4
+    | expr4
     ;
 
 expr4
     : expr5 Add expr5
     | expr5 Sub expr5
+    | expr5
     ;
 
 expr5
@@ -177,6 +180,13 @@ term
     | list_expr
     | enum_expr
     | dict_expr
+    ;
+
+term_tail
+    : %empty
+    | Dot ident term_tail
+    | LParen call_args RParen term_tail
+    | LBracket expr RBracket term_tail
     ;
 
 call_args
