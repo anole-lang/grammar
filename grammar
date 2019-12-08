@@ -22,6 +22,7 @@
 %token Continue;// continue
 %token Return;  // return
 %token Match;   // match
+%token Delay;   // delay
 
 %token New;     // new
 
@@ -51,7 +52,7 @@
 %token Mul;       // *
 %token Div;       // /
 %token Mod;       // %
-%token Assign;    // %
+%token Colon;    // :
 %token Dot;       // .
 %token Comma;     // ,
 %token LParen;    // (
@@ -91,7 +92,7 @@ stmt
 
 declaration
     : At ident
-    | At ident Assign expr
+    | At ident Colon delay_expr
     | At ident LParen decl_args RParen lambda_decl_tail
     ;
 
@@ -121,8 +122,13 @@ string
     : String
     ;
 
+delay_expr
+    : expr
+    | Delay expr
+    ;
+
 expr
-    : expr1 Assign expr1
+    : expr1 Colon delay_expr
     | expr1
     ;
 
@@ -191,12 +197,12 @@ term_tail
 
 call_args
     : %empty
-    | expr call_args_rest
+    | delay_expr call_args_rest
     ;
 
 call_args_rest
     : %empty
-    | Comma expr call_args_rest
+    | Comma delay_expr call_args_rest
     ;
 
 if_else
@@ -233,17 +239,17 @@ lambda_expr
 decl_args
     : %empty
     | ident decl_args_rest
-    | ident Assign expr decl_args_rest
+    | ident Colon expr decl_args_rest
     ;
 
 decl_args_rest
     : %empty
     | Comma ident decl_args_rest
-    | Comma ident Assign expr decl_args_rest
+    | Comma ident Colon expr decl_args_rest
     ;
 
 lambda_decl_tail
-    : Assign expr
+    : Colon expr
     | block
     ;
 
