@@ -122,48 +122,41 @@ string
     : String
     ;
 
-delay_expr
-    : expr
-    | Delay expr
-    ;
-
 expr
-    : expr1 Colon delay_expr
-    | expr1
+    : expr1 Or expr
     ;
 
 expr1
-    : expr2 Or expr2
-    | expr2 And expr2
+    : expr2 And expr1
     | expr2
     ;
 
 expr2
-    : expr3 CEQ expr3
-    | expr3 CNE expr3
-    | expr3 CLT expr3
-    | expr3 CLE expr3
-    | expr3 CGT expr3
-    | expr3 CGE expr3
-    | expr4
+    : expr3 CEQ expr2
+    | expr3 CNE expr2
+    | expr3 CLT expr2
+    | expr3 CLE expr2
+    | expr3 CGT expr2
+    | expr3 CGE expr2
+    | expr3
     ;
 
 expr3
-    : expr4 BLS expr4
-    | expr4 BRH expr4
+    : expr4 BLS expr3
+    | expr4 BRH expr3
     | expr4
     ;
 
 expr4
-    : expr5 Add expr5
-    | expr5 Sub expr5
+    : expr5 Add expr4
+    | expr5 Sub expr4
     | expr5
     ;
 
 expr5
-    : expr6 Mul expr6
-    | expr6 Div expr6
-    | expr6 Mod expr6
+    : expr6 Mul expr5
+    | expr6 Div expr5
+    | expr6 Mod expr5
     | expr6
     ;
 
@@ -171,6 +164,7 @@ expr6
     : Not expr6
     | Sub expr6
     | term term_tail
+    | term term_tail Colon delay_expr
     ;
 
 term
@@ -193,6 +187,11 @@ term_tail
     | Dot ident term_tail
     | LParen call_args RParen term_tail
     | LBracket expr RBracket term_tail
+    ;
+
+delay_expr
+    : expr
+    | Delay expr
     ;
 
 call_args
