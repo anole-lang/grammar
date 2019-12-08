@@ -52,7 +52,7 @@
 %token Mul;       // *
 %token Div;       // /
 %token Mod;       // %
-%token Colon;    // :
+%token Colon;     // :
 %token Dot;       // .
 %token Comma;     // ,
 %token LParen;    // (
@@ -61,6 +61,7 @@
 %token RBracket;  // ]
 %token LBrace;    // {
 %token RBrace;    // }
+%token Ques;      // ?
 
 %%
 
@@ -123,7 +124,7 @@ string
     ;
 
 expr
-    : expr0 if expr Else expr
+    : expr0 Ques expr expr
     | expr0
     ;
 
