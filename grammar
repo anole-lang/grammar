@@ -74,6 +74,7 @@ program
 
 stmts
     : %empty
+    | stmt stmts
     | stmt Semicolon stmts
     ;
 
