@@ -126,7 +126,7 @@ string
     ;
 
 expr
-    : expr0 Ques expr expr
+    : expr0 Ques expr Colon expr
     | expr0
     ;
 
