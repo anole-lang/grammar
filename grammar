@@ -53,6 +53,7 @@
 %token Div;       // /
 %token Mod;       // %
 %token Colon;     // :
+%token Semicolon; // ;
 %token Dot;       // .
 %token Comma;     // ,
 %token LParen;    // (
@@ -73,7 +74,7 @@ program
 
 stmts
     : %empty
-    | stmt stmts
+    | stmt Semicolon stmts
     ;
 
 stmt
