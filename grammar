@@ -215,12 +215,15 @@ delay_expr
 
 if_else
     : If expr block if_else_tail
+    | If expr Comma stmt if_else_tail
     ;
 
 if_else_tail
     : %empty
     | Elif block if_else_tail
+    | Elif Comma stmt if_else_tail
     | Else block
+    | Else Comma stmt
     ;
 
 while_stmt
