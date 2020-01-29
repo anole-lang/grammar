@@ -87,8 +87,8 @@ stmt
     | for_stmt
     | foreach_stmt
     | expr
-    | Return expr
-    | Use ident
+    | return_stmt
+    | use_stmt
     | Continue
     | Break
     ;
@@ -316,4 +316,12 @@ match_tail
 
 list_expr
     : LBracket call_args RBracket
+    ;
+
+return_stmt
+    : Return expr
+    ;
+
+use_stmt
+    : Use ident
     ;
