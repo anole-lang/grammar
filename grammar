@@ -8,7 +8,7 @@
 %token At;      // @
 %token Atat;    // @@
 
-%token Using;   // using
+%token Use;     // use
 %token If;      // if
 %token Elif;    // elif
 %token Else;    // else
@@ -88,7 +88,7 @@ stmt
     | foreach_stmt
     | expr
     | Return expr
-    | Using ident
+    | Use ident
     | Continue
     | Break
     ;
