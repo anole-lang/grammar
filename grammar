@@ -40,6 +40,7 @@
 %token And;       // and
 %token Or;        // or
 %token Not;       // not !
+%token Is;        // is
 %token CEQ;       // =
 %token CNE;       // !=
 %token CLT;       // <
