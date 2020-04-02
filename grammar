@@ -324,9 +324,17 @@ return_stmt
     : Return expr
     ;
 
+alias_ident
+    : ident
+    | ident As ident
+    ;
+
+alias_idents
+    : alias_ident
+    | alias_ident Comma alias_idents
+    ;
+
 use_stmt
-    : Use ident
-    | Use ident As ident
-    | Use ident As ident From ident
-    | Use ident Comma bases From ident
+    : Use alias_idents
+    | Use alias_idents From ident
     ;
