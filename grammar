@@ -337,4 +337,5 @@ alias_idents
 use_stmt
     : Use alias_idents
     | Use alias_idents From ident
+    | Use Mul From ident
     ;
