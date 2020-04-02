@@ -9,6 +9,7 @@
 %token Atat;    // @@
 
 %token Use;     // use
+%token From;    // from
 %token If;      // if
 %token Elif;    // elif
 %token Else;    // else
