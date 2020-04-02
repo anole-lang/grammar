@@ -326,4 +326,7 @@ return_stmt
 
 use_stmt
     : Use ident
+    | Use ident As ident
+    | Use ident As ident From ident
+    | Use ident Comma bases From ident
     ;
