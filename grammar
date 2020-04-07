@@ -285,7 +285,19 @@ new_expr
     ;
 
 enum_expr
-    : Enum LBrace decl_args RBrace
+    : Enum LBrace enums RBrace
+    ;
+
+enums
+    : %empty
+    | ident enums
+    | ident Colon Integer enums_rest
+    ;
+
+enums_rest
+    : %empty
+    | Comma ident enums_rest
+    | Comma ident Colon Integer enums_rest
     ;
 
 dict_expr
