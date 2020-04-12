@@ -234,7 +234,8 @@ do_while_stmt
     ;
 
 foreach_stmt
-    : Foreach expr As ident block
+    : Foreach expr block
+    | Foreach expr As ident block
     ;
 
 lambda_expr
