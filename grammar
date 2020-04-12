@@ -87,7 +87,6 @@ stmt
     | if_else
     | while_stmt
     | do_while_stmt
-    | for_stmt
     | foreach_stmt
     | expr
     | return_stmt
@@ -234,11 +233,6 @@ while_stmt
 
 do_while_stmt
     : Do block While expr
-    ;
-
-for_stmt
-    : For expr To expr As ident block
-    | For expr To expr block
     ;
 
 foreach_stmt
