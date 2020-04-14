@@ -1,5 +1,5 @@
-# grammar for ice
-# http://www.jusot.com/ice/grammar/
+# grammar for anole
+# http://www.jusot.com/anole/grammar/
 
 # start symbols for the grammar:
 #       stmt is a single interactive statemnet;
