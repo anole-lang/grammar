@@ -1,2 +1,2 @@
-# ice-grammar
-only contains the grammar of ice-language
+# anole-grammar
+only contains the grammar of anole-language
