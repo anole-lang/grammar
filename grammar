@@ -9,6 +9,7 @@
 %token Atat;    // @@
 
 %token Use;     // use
+%token Infixop; // infixop
 %token From;    // from
 %token If;      // if
 %token Elif;    // elif
@@ -83,6 +84,7 @@ stmts
 stmt
     : declaration
     | class_decl
+    | infixop_decl
     | if_else
     | while_stmt
     | do_while_stmt
@@ -219,6 +221,10 @@ call_args_rest
 delay_expr
     : expr
     | Delay expr
+    ;
+
+infixop_decl
+    : Infixop UserOp LParen Identifier Comma Identifier RParen block
     ;
 
 if_else
