@@ -223,7 +223,7 @@ delay_expr
     ;
 
 infixop_decl
-    : Infixop Identifier
+    : Infixop Integer Identifier
     ;
 
 if_else
