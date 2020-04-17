@@ -9,8 +9,8 @@
 %token Atat;    // @@
 
 %token Use;     // use
-%token Infixop; // infixop
 %token From;    // from
+%token Infixop; // infixop
 %token If;      // if
 %token Elif;    // elif
 %token Else;    // else
@@ -35,7 +35,7 @@
 %token Integer;    // [0-9]+
 %token Double;     // [0-9]+\.[0-9]*
 %token String;     // "[^"\n]"
-%token UserOp;     // [^a-zA-Z0-9_#@.:;?\(\)\[\]\{\}"]+
+%token UserOp;     // [^a-zA-Z0-9_#@.:;?\(\)\[\]\{\}"]+ // UserOp will generate new token instead of UserOp
 
 %token BLS;       // <<
 %token BRH;       // >>
