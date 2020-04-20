@@ -256,13 +256,17 @@ lambda_expr
 decl_args
     : %empty
     | ident decl_args_rest
+    | BAnd ident decl_args_rest
     | ident Colon expr decl_args_rest
+    | BAnd ident Colon expr decl_args_rest
     ;
 
 decl_args_rest
     : %empty
     | Comma ident decl_args_rest
+    | Comma BAnd ident decl_args_rest
     | Comma ident Colon expr decl_args_rest
+    | Comma BAnd ident Colon expr decl_args_rest
     ;
 
 lambda_decl_tail
