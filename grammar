@@ -98,6 +98,7 @@ stmt
 declaration
     : At ident
     | At ident Colon delay_expr
+    | At BAnd ident Colon delay_expr
     | At ident LParen decl_args RParen lambda_decl_tail
     ;
 
