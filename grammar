@@ -1,70 +1,71 @@
 # grammar for anole
-# http://www.jusot.com/anole/grammar/
+# http: //www.jusot.com/anole/grammar/
 
 # start symbols for the grammar:
 #       stmt is a single interactive statemnet;
 #       stmts is a module or sequence of commands read from an input file;
 
-%token At;      // @
-%token Atat;    // @@
+%token At;       // @
+%token Atat;     // @@
 
-%token Use;     // use
-%token From;    // from
-%token Infixop; // infixop
-%token If;      // if
-%token Elif;    // elif
-%token Else;    // else
-%token While;   // while
-%token Do;      // do
-%token Foreach; // foreach
-%token As;      // as
-%token Break;   // break
-%token Continue;// continue
-%token Return;  // return
-%token Match;   // match
-%token Delay;   // delay
+%token Use;      // use
+%token From;     // from
+%token Prefixop; // prefixop
+%token Infixop;  // infixop
+%token If;       // if
+%token Elif;     // elif
+%token Else;     // else
+%token While;    // while
+%token Do;       // do
+%token Foreach;  // foreach
+%token As;       // as
+%token Break;    // break
+%token Continue; // continue
+%token Return;   // return
+%token Match;    // match
+%token Delay;    // delay
 
-%token New;     // new
-%token Enum;    // enum
+%token New;      // new
+%token Enum;     // enum
 
-%token None;    // none
-%token True;    // true
-%token False;   // false
+%token None;     // none
+%token True;     // true
+%token False;    // false
 
-%token Identifier; // [^ 0-9_#@.:;?\(\)\[\]\{\}"]+
-%token Integer;    // [0-9]+
-%token Double;     // [0-9]+\.[0-9]*
-%token String;     // "[^"\n]"
+%token Identifier;  // [^ 0-9_#@.:;?\(\)\[\]\{\}"]+
+%token Integer;     // [0-9]+
+%token Double;      // [0-9]+\.[0-9]*
+%token String;      // "[^"\n]"
 
-%token BLS;       // <<
-%token BRH;       // >>
-%token And;       // and
-%token Or;        // or
-%token Not;       // not !
-%token Is;        // is
-%token CEQ;       // =
-%token CNE;       // !=
-%token CLT;       // <
-%token CLE;       // <=
-%token CGT;       // >
-%token CGE;       // >=
-%token Ret;       // =>
-%token Add;       // +
-%token Sub;       // -
-%token Mul;       // *
-%token Div;       // /
-%token Mod;       // %
-%token Colon;     // :
-%token Semicolon; // ;
-%token Dot;       // .
-%token Comma;     // ,
-%token LParen;    // (
-%token RParen;    // )
-%token LBracket;  // [
-%token RBracket;  // ]
-%token LBrace;    // {
-%token RBrace;    // }
-%token Ques;      // ?
+%token BLS;        // <<
+%token BRH;        // >>
+%token And;        // and
+%token Or;         // or
+%token Not;        // not !
+%token Is;         // is
+%token CEQ;        // =
+%token CNE;        // !=
+%token CLT;        // <
+%token CLE;        // <=
+%token CGT;        // >
+%token CGE;        // >=
+%token Ret;        // =>
+%token Add;        // +
+%token Sub;        // -
+%token Mul;        // *
+%token Div;        // /
+%token Mod;        // %
+%token Colon;      // :
+%token Semicolon;  // ;
+%token Dot;        // .
+%token Comma;      // ,
+%token LParen;     // (
+%token RParen;     // )
+%token LBracket;   // [
+%token RBracket;   // ]
+%token LBrace;     // {
+%token RBrace;     // }
+%token Ques;       // ?
 
 %%
 
@@ -83,6 +84,7 @@ stmts
 stmt
     : declaration
     | class_decl
+    | prefixop_decl
     | infixop_decl
     | if_else
     | while_stmt
@@ -175,13 +177,14 @@ expr5
     ;
 
 expr6
-    : expr7 UserOp expr6    // UserOp defined by infixop
+    : expr7 UserInfixOp expr6     // UserInfixOp defined by infixop
     | expr7
     ;
 
 expr7
     : Not expr7
     | Sub expr7
+    | UserPrefixOp                // UserPrefixOp defined by prefixop
     | term term_tail
     | term term_tail Colon delay_expr
     ;
@@ -221,6 +224,10 @@ call_args_rest
 delay_expr
     : expr
     | Delay expr
+    ;
+
+prefixop_decl
+    : Prefixop Identifier
     ;
 
 infixop_decl
