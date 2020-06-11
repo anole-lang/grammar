@@ -58,6 +58,7 @@
 %token Colon;      // :
 %token Semicolon;  // ;
 %token Dot;        // .
+%token Dooot;      // ...
 %token Comma;      // ,
 %token LParen;     // (
 %token RParen;     // )
@@ -101,7 +102,7 @@ declaration
     : At ident
     | At ident Colon delay_expr
     | At BAnd ident Colon delay_expr
-    | At ident LParen decl_args RParen lambda_decl_tail
+    | At ident LParen parameters RParen lambda_decl_tail
     ;
 
 block
@@ -207,18 +208,19 @@ term
 term_tail
     : %empty
     | Dot ident term_tail
-    | LParen call_args RParen term_tail
+    | LParen arguments RParen term_tail
     | LBracket expr RBracket term_tail
     ;
 
-call_args
+arguments
     : %empty
-    | delay_expr call_args_rest
+    | delay_expr arguments_rest
+    | delay_expr Dooot arguments_rest
     ;
 
-call_args_rest
+arguments_rest
     : %empty
-    | Comma delay_expr call_args_rest
+    | Comma delay_expr arguments_rest
     ;
 
 delay_expr
@@ -258,23 +260,28 @@ foreach_stmt
     ;
 
 lambda_expr
-    : At LParen decl_args RParen lambda_decl_tail
+    : At LParen parameters RParen lambda_decl_tail
     ;
 
-decl_args
-    : %empty
-    | ident decl_args_rest
-    | BAnd ident decl_args_rest
-    | ident Colon expr decl_args_rest
-    | BAnd ident Colon expr decl_args_rest
+parameter
+    : ident
+    | BAnd ident
+    | ident Colon expr
+    | BAnd ident Colon expr
     ;
 
-decl_args_rest
+parameters
     : %empty
-    | Comma ident decl_args_rest
-    | Comma BAnd ident decl_args_rest
-    | Comma ident Colon expr decl_args_rest
-    | Comma BAnd ident Colon expr decl_args_rest
+    | parameter parameters_rest
+    | parameter Dooot parameters_rest
+    ;
+
+parameters_rest
+    : %empty
+    | Comma ident parameters_rest
+    | Comma BAnd ident parameters_rest
+    | Comma ident Colon expr parameters_rest
+    | Comma BAnd ident Colon expr parameters_rest
     ;
 
 lambda_decl_tail
@@ -297,7 +304,7 @@ bases_rest
     ;
 
 new_expr
-    : New ident LParen call_args RParen
+    : New ident LParen arguments RParen
     ;
 
 enum_expr
@@ -328,12 +335,12 @@ dict_rest
 
 match_expr
     : Match expr LBrace RBrace match_tail
-    | Match expr LBrace expr call_args_rest Ret expr match_rest RBrace match_tail
+    | Match expr LBrace expr arguments_rest Ret expr match_rest RBrace match_tail
     ;
 
 match_rest
     : %empty
-    | Comma expr call_args_rest Ret expr match_rest
+    | Comma expr arguments_rest Ret expr match_rest
     ;
 
 match_tail
@@ -342,7 +349,7 @@ match_tail
     ;
 
 list_expr
-    : LBracket call_args RBracket
+    : LBracket arguments RBracket
     ;
 
 return_stmt
