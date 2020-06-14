@@ -284,13 +284,13 @@ parameters_rest
     : %empty
     | Comma parameter parameters_rest
     | Comma parameter_with_value parameters_with_value_rest
-    | Dooot ident
+    | Dooot parameter
     ;
 
 parameters_with_value_rest
     : %empty
     | Comma parameter_with_value parameters_with_value_rest
-    | Dooot ident
+    | Dooot parameter
     ;
 
 lambda_decl_tail
