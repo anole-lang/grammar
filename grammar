@@ -266,22 +266,31 @@ lambda_expr
 parameter
     : ident
     | BAnd ident
-    | ident Colon expr
+    ;
+
+parameter_with_value
+    : ident Colon expr
     | BAnd ident Colon expr
     ;
 
 parameters
     : %empty
     | parameter parameters_rest
-    | parameter Dooot parameters_rest
+    | parameter_with_value parameters_with_value_rest
+    | Dooot parameter
     ;
 
 parameters_rest
     : %empty
-    | Comma ident parameters_rest
-    | Comma BAnd ident parameters_rest
-    | Comma ident Colon expr parameters_rest
-    | Comma BAnd ident Colon expr parameters_rest
+    | Comma parameter parameters_rest
+    | Comma parameter_with_value parameters_with_value_rest
+    | Dooot ident
+    ;
+
+parameters_with_value_rest
+    : %empty
+    | Comma parameter_with_value parameters_with_value_rest
+    | Dooot ident
     ;
 
 lambda_decl_tail
