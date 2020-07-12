@@ -365,7 +365,8 @@ match_tail
     ;
 
 list_expr
-    : LBracket arguments RBracket
+    : LBracket RBracket
+    | LBracket expr exprs RBracket
     ;
 
 return_stmt
