@@ -370,12 +370,12 @@ list_expr
     ;
 
 return_stmt
-    : Return expr exprs
+    : Return delay_expr exprs
     ;
 
 exprs
     : %empty
-    | Comma expr exprs
+    | Comma delay_expr exprs
     ;
 
 alias_ident
