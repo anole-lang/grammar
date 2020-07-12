@@ -101,8 +101,15 @@ stmt
 declaration
     : At ident
     | At ident Colon delay_expr
+    | At ident Comma ident idents
+    | At ident Comma ident idents Colon expr
     | At BAnd ident Colon delay_expr
     | At ident LParen parameters RParen lambda_decl_tail
+    ;
+
+idents
+    : %empty
+    | Comma ident idents
     ;
 
 block
@@ -362,7 +369,12 @@ list_expr
     ;
 
 return_stmt
-    : Return expr
+    : Return expr exprs
+    ;
+
+exprs
+    : %empty
+    | Comma expr exprs
     ;
 
 alias_ident
