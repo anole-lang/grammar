@@ -100,16 +100,20 @@ stmt
 
 declaration
     : At ident
-    | At ident Colon delay_expr
-    | At ident Comma ident idents
-    | At ident Comma ident idents Colon expr
-    | At BAnd ident Colon delay_expr
+    | At declident Colon delay_expr
+    | At declident Comma declident idents
+    | At declident Comma declident idents Colon delay_expr exprs
     | At ident LParen parameters RParen lambda_decl_tail
     ;
 
-idents
+declident
+    : ident
+    | BAnd ident
+    ;
+
+declidents
     : %empty
-    | Comma ident idents
+    | Comma declident declidents
     ;
 
 block
@@ -301,7 +305,7 @@ parameters_with_value_rest
     ;
 
 lambda_decl_tail
-    : Colon expr
+    : Colon delay_expr exprs
     | block
     ;
 
