@@ -382,6 +382,26 @@ exprs
     | Comma delay_expr exprs
     ;
 
+use_stmt
+    : Use Mul From module
+    | Use alias_modules
+    | Use alias_idents From module
+    ;
+
+module
+    : string
+    | ident
+    ;
+
+alias_module
+    : module As ident
+    ;
+
+alias_modules
+    : alias_module
+    | alias_module Comma alias_idents
+    ;
+
 alias_ident
     : ident
     | ident As ident
@@ -390,10 +410,4 @@ alias_ident
 alias_idents
     : alias_ident
     | alias_ident Comma alias_idents
-    ;
-
-use_stmt
-    : Use alias_idents
-    | Use alias_idents From ident
-    | Use Mul From ident
     ;
