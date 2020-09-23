@@ -6,7 +6,6 @@
 #       stmts is a module or sequence of commands read from an input file;
 
 %token At;       // @
-%token Atat;     // @@
 
 %token Use;      // use
 %token From;     // from
@@ -25,8 +24,8 @@
 %token Match;    // match
 %token Delay;    // delay
 
-%token New;      // new
 %token Enum;     // enum
+%token Dict;     // dict
 
 %token None;     // none
 %token True;     // true
@@ -84,7 +83,6 @@ stmts
 
 stmt
     : declaration
-    | class_decl
     | prefixop_decl
     | infixop_decl
     | if_else
@@ -272,6 +270,7 @@ foreach_stmt
 
 lambda_expr
     : At LParen parameters RParen lambda_decl_tail
+    | block
     ;
 
 parameter
@@ -309,24 +308,6 @@ lambda_decl_tail
     | block
     ;
 
-class_decl
-    : Atat ident LParen bases RParen block
-    ;
-
-bases:
-    : %empty
-    | ident bases_rest
-    ;
-
-bases_rest
-    : %empty
-    | Comma ident bases_rest
-    ;
-
-new_expr
-    : New ident LParen arguments RParen
-    ;
-
 enum_expr
     : Enum LBrace enums RBrace
     ;
@@ -344,8 +325,8 @@ enums_rest
     ;
 
 dict_expr
-    : LBrace RBrace
-    | LBrace expr Ret expr dict_rest RBrace
+    : Dict LBrace RBrace
+    | Dict LBrace expr Ret expr dict_rest RBrace
     ;
 
 dict_rest
