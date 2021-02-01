@@ -26,21 +26,48 @@
 
 %token Enum;     // enum
 %token Dict;     // dict
+%token Class;    // class
 
 %token None;     // none
 %token True;     // true
 %token False;    // false
 
-%token Identifier;  // [^ 0-9_#@.:;?\(\)\[\]\{\}"]+
+%token Identifier;  // ([a-zA-Z_][0-9a-zA-Z_]+) | ([^0-9a-zA-Z_@#.,:;"&\(\)\[\]\{\}]+)
 %token Integer;     // [0-9]+
 %token Double;      // [0-9]+\.[0-9]*
 %token String;      // "[^"\n]"
 
+%token Comma;      // ,
+%token Dot;        // .
+%token Dooot;      // ...
+
+%token LParen;     // (
+%token RParen;     // )
+%token LBracket;   // [
+%token RBracket;   // ]
+%token LBrace;     // {
+%token RBrace;     // }
+
+%token Colon;      // :
+%token Semicolon;  // ;
+
+%token Add;        // +
+%token Sub;        // -
+%token Mul;        // *
+%token Div;        // /
+%token Mod;        // %
+
+%token BAnd;       // &
+%token BOr;        // |
+%token BXor;       // ^
+%token BNeg;       // ~
 %token BLS;        // <<
 %token BRH;        // >>
+
 %token And;        // and
 %token Or;         // or
 %token Not;        // not !
+
 %token Is;         // is
 %token CEQ;        // =
 %token CNE;        // !=
@@ -48,23 +75,9 @@
 %token CLE;        // <=
 %token CGT;        // >
 %token CGE;        // >=
+
 %token Ret;        // =>
-%token Add;        // +
-%token Sub;        // -
-%token Mul;        // *
-%token Div;        // /
-%token Mod;        // %
-%token Colon;      // :
-%token Semicolon;  // ;
-%token Dot;        // .
-%token Dooot;      // ...
-%token Comma;      // ,
-%token LParen;     // (
-%token RParen;     // )
-%token LBracket;   // [
-%token RBracket;   // ]
-%token LBrace;     // {
-%token RBrace;     // }
+
 %token Ques;       // ?
 
 %%
