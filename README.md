@@ -1,2 +1,1 @@
-# anole-grammar
-only contains the grammar of anole-language
+# The Grammar of the Anole Programming Language
