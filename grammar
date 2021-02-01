@@ -364,9 +364,23 @@ exprs
     ;
 
 use_stmt
-    : Use Mul From module
-    | Use alias_modules
-    | Use alias_idents From module
+    : Use Mul From nested_module
+    | Use aliases From nested_module
+    | Use nested_modules
+    ;
+
+nested_module
+    : module nested_module_tail
+    ;
+
+nested_module_tail
+    : %empty
+    | Dot ident nested_module_tail
+    ;
+
+nested_modules
+    : nested_module Comma nested_modules
+    | nested_module
     ;
 
 module
@@ -374,21 +388,13 @@ module
     | ident
     ;
 
-alias_module
-    : module As ident
+aliases
+    : alias Comma aliases
+    | alias
     ;
 
-alias_modules
-    : alias_module
-    | alias_module Comma alias_idents
+alias
+    : ident nested_module_tail As ident
+    | ident nested_module_tail
     ;
 
-alias_ident
-    : ident
-    | ident As ident
-    ;
-
-alias_idents
-    : alias_ident
-    | alias_ident Comma alias_idents
-    ;
